@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Der Wald™ — Tecnología para la salud mental</title>
+<link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0c0e0c;
+--bg-card:rgba(255,255,255,0.025);
+--bg-card-hover:rgba(255,255,255,0.045);
+--text:#e2e0da;
+--text-muted:#8a8880;
+--text-dim:#55534e;
+--accent:#7a9a7a;
+--accent-soft:rgba(122,154,122,0.10);
+--accent-glow:rgba(122,154,122,0.03);
+--serif:'Cormorant Garamond',Georgia,serif;
+--sans:'DM Sans','Helvetica Neue',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;overflow-x:hidden}
+::selection{background:var(--accent);color:var(--bg)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(12,14,12,0.8);transition:all 0.4s}
+nav.scrolled{padding:1rem 3rem;background:rgba(12,14,12,0.95)}
+.nav-brand{font-family:var(--serif);font-size:1.2rem;font-weight:400;letter-spacing:0.2em;color:var(--accent);text-decoration:none;text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:400;transition:color 0.3s}
+.nav-links a:hover{color:var(--text)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;z-index:201;background:none;border:none}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--accent);transition:all 0.3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+
+@media(max-width:768px){
+.hamburger{display:flex}
+.nav-links{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(12,14,12,1);flex-direction:column;justify-content:center;align-items:center;gap:3rem;opacity:0;pointer-events:none;transition:opacity 0.4s;z-index:200}
+.nav-links.open{opacity:1;pointer-events:all}
+.nav-links a{font-size:1rem;letter-spacing:0.15em}
+nav{padding:1rem 1.5rem}
+.hero{padding:2rem 1.5rem}
+.hero-title{letter-spacing:0.12em}
+.content{padding:0 1.5rem}
+.projects-grid{grid-template-columns:1fr !important}
+.about-grid{grid-template-columns:1fr !important}
+.footer-cols{flex-direction:column;gap:2rem;text-align:center !important}
+.footer-cols>div{text-align:center !important}
+}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:2rem 3rem}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%, var(--accent-glow) 0%, transparent 70%);pointer-events:none}
+.hero-label{font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;animation:fadeIn 1.5s ease 0.2s forwards}
+.hero-title{font-family:var(--serif);font-size:clamp(3.5rem,10vw,7.5rem);font-weight:300;letter-spacing:0.15em;color:var(--text);line-height:1;margin-bottom:1.5rem;opacity:0;animation:fadeUp 1.5s ease 0.4s forwards}
+.hero-sub{font-size:0.85rem;font-weight:300;color:var(--text-muted);letter-spacing:0.08em;max-width:400px;opacity:0;animation:fadeIn 1.5s ease 1s forwards;line-height:1.8}
+.hero-scroll{position:absolute;bottom:3rem;display:flex;flex-direction:column;align-items:center;gap:0.8rem;opacity:0;animation:fadeIn 2s ease 1.8s forwards}
+.hero-scroll span{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim)}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);animation:pulse 2s ease-in-out infinite}
+
+/* CONTENT */
+.content{max-width:1000px;margin:0 auto;padding:0 3rem}
+
+/* SECTION */
+.section{padding:6rem 0}
+.section-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem}
+.section-title{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;line-height:1.3;margin-bottom:1.5rem;color:var(--text)}
+.section-text{color:var(--text-muted);font-size:0.92rem;line-height:1.9;max-width:640px}
+.section-text p+p{margin-top:1.3rem}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2.5rem}
+.project-card{padding:2rem;background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:3px;position:relative;overflow:hidden;transition:all 0.5s;text-decoration:none;display:flex;flex-direction:column}
+.project-card:hover{border-color:rgba(122,154,122,0.2);background:var(--bg-card-hover);transform:translateY(-2px)}
+.project-card-accent{width:100%;height:2px;background:linear-gradient(90deg,var(--accent),transparent);margin-bottom:1.5rem;opacity:0.4;transition:opacity 0.4s}
+.project-card:hover .project-card-accent{opacity:1}
+.project-tag{font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.project-card h3{font-family:var(--serif);font-size:1.4rem;font-weight:400;margin-bottom:0.7rem;color:var(--text)}
+.project-card p{color:var(--text-muted);font-size:0.82rem;line-height:1.8;flex:1}
+.project-status{margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);font-size:0.65rem;letter-spacing:0.08em;color:var(--text-dim)}
+.project-link{font-size:0.75rem;color:var(--accent);margin-top:0.8rem;display:inline-block;transition:opacity 0.3s}
+.project-card:hover .project-link{opacity:0.7}
+
+/* SEPARATOR */
+.sep{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(122,154,122,0.12),transparent);margin:0 auto}
+
+/* DETAIL SECTIONS */
+.detail{padding:5rem 0}
+.detail-content{color:var(--text-muted);font-size:0.92rem;line-height:1.9;max-width:640px}
+.detail-content p+p{margin-top:1.3rem}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:2fr 1fr;gap:4rem;align-items:start;margin-top:2rem}
+.about-text{color:var(--text-muted);font-size:0.92rem;line-height:1.9}
+.about-text p+p{margin-top:1.3rem}
+.about-aside{padding:2rem;background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:3px}
+.about-aside-title{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.about-stat{margin-bottom:1.2rem}
+.about-stat-num{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:var(--text)}
+.about-stat-label{font-size:0.7rem;color:var(--text-dim);margin-top:0.2rem}
+
+/* CONTACT */
+.contact{text-align:center;padding:8rem 0}
+.contact-email{font-family:var(--serif);font-size:1.3rem;font-weight:300;color:var(--accent);text-decoration:none;letter-spacing:0.03em;transition:opacity 0.3s}
+.contact-email:hover{opacity:0.7}
+.contact-note{margin-top:0.8rem;font-size:0.78rem;color:var(--text-dim)}
+
+/* FOOTER */
+footer{padding:3rem;border-top:1px solid rgba(255,255,255,0.03)}
+.footer-cols{display:flex;justify-content:space-between;align-items:flex-start;max-width:1000px;margin:0 auto;font-size:0.65rem;color:var(--text-dim);letter-spacing:0.08em}
+.footer-cols a{color:var(--text-dim);text-decoration:none;transition:color 0.3s}
+.footer-cols a:hover{color:var(--accent)}
+.footer-cols p+p{margin-top:0.4rem}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.23,1,0.32,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+<a href="#" class="nav-brand">Der Wald™</a>
+<button class="hamburger" id="hamburger" aria-label="Menú">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links" id="navLinks">
+<li><a href="#proyectos">Proyectos</a></li>
+<li><a href="#sobre">Sobre</a></li>
+<li><a href="#contacto">Contacto</a></li>
+<li><a href="https://lecturaintegrada.es" target="_blank">Lectura Integrada</a></li>
+<li><a href="https://hederamusica.es" target="_blank">Hedera™</a></li>
+<li><a href="https://bricolajesonoro.es" target="_blank">Bricolaje Sonoro™</a></li>
+</ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<p class="hero-label">Investigación · Creación · Tecnología</p>
+<h1 class="hero-title">Der Wald™</h1>
+<p class="hero-sub">Un proyecto personal de investigación en tecnología para la salud mental</p>
+<div class="hero-scroll">
+<span>Explorar</span>
+<div class="scroll-line"></div>
+</div>
+</section>
+
+<!-- PROYECTOS -->
+<div class="content">
+<section class="section" id="proyectos">
+<div class="reveal">
+<p class="section-label">Ecosistema</p>
+<h2 class="section-title">Cuatro líneas de trabajo</h2>
+<p class="section-text">Cuatro proyectos conectados por una idea: que el material que el cerebro genera en la frontera entre la vigilia y el sueño puede ser útil — para regularse, para crear y para resolver problemas.</p>
+</div>
+
+<div class="projects-grid">
+
+<a href="https://lecturaintegrada.es" class="project-card reveal">
+<div class="project-card-accent"></div>
+<p class="project-tag">Investigación</p>
+<h3>Lectura Integrada</h3>
+<p>Protocolo de reestructuración narrativa asistida, complementario a la intervención psicoterapéutica. Cruza estados hipnagógicos con un diario reflexivo usando IA.</p>
+<p class="project-status">Libro Blanco v5.5 · Registro de la Propiedad Intelectual</p>
+<span class="project-link">lecturaintegrada.es →</span>
+</a>
+
+<a href="https://hederamusica.es" target="_blank" class="project-card reveal">
+<div class="project-card-accent"></div>
+<p class="project-tag">Proyecto artístico</p>
+<h3>Hedera™</h3>
+<p>Nombre artístico bajo el que se publican las canciones nacidas del proceso liminal. Tres canciones publicadas en plataformas de streaming.</p>
+<p class="project-status">Streaming · Marca OEPM (cl. 9, 41)</p>
+<span class="project-link">hederamusica.es →</span>
+</a>
+
+<a href="https://bricolajesonoro.es" target="_blank" class="project-card reveal">
+<div class="project-card-accent"></div>
+<p class="project-tag">Creación artística</p>
+<h3>Bricolaje Sonoro™</h3>
+<p>Método de composición musical que utiliza como materia prima el contenido que emerge en los estados hipnagógicos.</p>
+<p class="project-status">Método publicado · Marca OEPM (cl. 41)</p>
+<span class="project-link">bricolajesonoro.es →</span>
+</a>
+
+<a href="#il" class="project-card reveal">
+<div class="project-card-accent"></div>
+<p class="project-tag">Concepto</p>
+<h3>Incubación Liminal</h3>
+<p>Uso intencional del estado hipnagógico para la resolución dirigida de problemas creativos y técnicos.</p>
+<p class="project-status">Documento conceptual v0.1</p>
+</a>
+
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LECTURA INTEGRADA -->
+<section class="detail reveal" id="li">
+<p class="section-label">Proyecto principal</p>
+<h2 class="section-title">Lectura Integrada</h2>
+<div class="detail-content">
+<p>La Lectura Integrada es un protocolo de reestructuración narrativa asistida, complementario a la intervención psicoterapéutica. Cruza, con asistencia de un modelo de lenguaje, el contenido fenomenológico de los estados hipnagógicos e hipnopómpicos con un diario reflexivo. El cruce produce una síntesis a partir de la cual se deriva una afirmación-prime, cerrando un bucle de retroalimentación.</p>
+<p>El protocolo se ha aplicado durante más de un año en un estudio exploratorio intrasujeto. Los resultados son exploratorios, no causales. El Libro Blanco ha sido sometido a lectura crítica clínica independiente.</p>
+<p style="margin-top:1.5rem"><a href="https://lecturaintegrada.es" style="color:var(--accent);text-decoration:none;font-size:0.85rem">lecturaintegrada.es →</a></p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- BRICOLAJE SONORO -->
+<section class="detail reveal" id="bs">
+<p class="section-label">Creación artística</p>
+<h2 class="section-title">Bricolaje Sonoro™</h2>
+<div class="detail-content">
+<p>El Bricolaje Sonoro™ es un método de composición musical que utiliza como materia prima el contenido que emerge espontáneamente en los estados hipnagógicos: melodías, frases oníricas, texturas sonoras. A diferencia de la Lectura Integrada, aquí el material liminal no se dirige ni se interpreta — se cosecha tal cual y se transforma en canción.</p>
+<p>El método se publica bajo el nombre artístico Hedera™. Tres canciones publicadas en plataformas de streaming.</p>
+<p style="margin-top:1.5rem"><a href="https://bricolajesonoro.es" target="_blank" style="color:var(--accent);text-decoration:none;font-size:0.85rem">bricolajesonoro.es →</a>&emsp;<a href="https://hederamusica.es" target="_blank" style="color:var(--accent);text-decoration:none;font-size:0.85rem">hederamusica.es →</a></p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- INCUBACIÓN LIMINAL -->
+<section class="detail reveal" id="il">
+<p class="section-label">En concepto</p>
+<h2 class="section-title">Incubación Liminal</h2>
+<div class="detail-content">
+<p>La Incubación Liminal utiliza la transición al sueño como espacio para la resolución dirigida de problemas. A diferencia de la Lectura Integrada, el material hipnagógico no es espontáneo sino intencionalmente sembrado.</p>
+<p>En fase conceptual. No entrará en desarrollo activo hasta que Lectura Integrada tenga un MVP validado.</p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- SOBRE -->
+<section class="section reveal" id="sobre">
+<p class="section-label">Sobre</p>
+<h2 class="section-title">Un proyecto personal</h2>
+<div class="about-grid">
+<div class="about-text">
+<p>Der Wald™ nace de una práctica personal sostenida: más de un año registrando el contenido que emerge en la transición al sueño, cruzándolo con un diario reflexivo, y utilizando inteligencia artificial para identificar correspondencias temáticas.</p>
+<p>De esa práctica han salido un protocolo de investigación, un método de composición musical y el concepto de un protocolo de resolución creativa de problemas.</p>
+<p>Toda la investigación, la escritura y el desarrollo técnico se realizan como actividad intelectual privada. Los resultados son exploratorios y se publican con total transparencia sobre sus limitaciones.</p>
+<p style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.04);font-style:italic;color:var(--text-dim);font-size:0.88rem;line-height:1.8"><em>Der Wald</em> es «el bosque» en alemán. El nombre viene de un lugar real — un bosque en el sur de Alemania donde, en un momento difícil, todo se simplificó. Los árboles no interpretan, no juzgan, no tienen prisa. Ese es el espíritu del proyecto.</p>
+</div>
+<div class="about-aside">
+<p class="about-aside-title">El proyecto en cifras</p>
+<div class="about-stat">
+<p class="about-stat-num">1.900+</p>
+<p class="about-stat-label">registros hipnagógicos</p>
+</div>
+<div class="about-stat">
+<p class="about-stat-num">12+</p>
+<p class="about-stat-label">meses de práctica continuada</p>
+</div>
+<div class="about-stat" style="margin-bottom:0">
+<p class="about-stat-num">3</p>
+<p class="about-stat-label">canciones publicadas</p>
+</div>
+</div>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- CONTACTO -->
+<section class="contact reveal" id="contacto">
+<p class="section-label" style="justify-content:center;text-align:center">Contacto</p>
+<h2 class="section-title" style="text-align:center">Escríbeme</h2>
+<a href="mailto:contacto@derwald.es" class="contact-email">contacto@derwald.es</a>
+<p class="contact-note">Para cualquier cosa. Sin prisas.</p>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-cols">
+<div>
+<p>© 2026 Der Wald™</p>
+<p>Un proyecto personal de investigación</p>
+<p style="margin-top:0.8rem;font-size:0.6rem;color:var(--text-dim);opacity:0.6">Der Wald™ (cl. 41, 42, 44) · Hedera™ (cl. 9, 41) · Bricolaje Sonoro™ (cl. 41)<br>Marcas solicitadas en OEPM. Todos los derechos reservados.</p>
+</div>
+<div style="text-align:right">
+<p><a href="https://lecturaintegrada.es">lecturaintegrada.es</a></p>
+<p><a href="https://hederamusica.es">hederamusica.es</a></p>
+<p><a href="https://bricolajesonoro.es">bricolajesonoro.es</a></p>
+<p>derwald.es</p>
+</div>
+</div>
+</footer>
+
+<script>
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>100)});
+
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.12});
+reveals.forEach(r=>observer.observe(r));
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+a.addEventListener('click',e=>{
+e.preventDefault();
+const href=a.getAttribute('href');
+if(href==='#'){window.scrollTo({top:0,behavior:'smooth'})}
+else{const t=document.querySelector(href);if(t)t.scrollIntoView({behavior:'smooth'})}
+document.getElementById('hamburger').classList.remove('active');
+document.getElementById('navLinks').classList.remove('open');
+});
+});
+
+const hamburger=document.getElementById('hamburger');
+const navLinks=document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{
+hamburger.classList.toggle('active');
+navLinks.classList.toggle('open');
+});
+</script>
+</body>
+</html>
